@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Testing</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous"> -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+  <script src="{{ url_for('static', filename = 'app.js') }}"></script>
+</head>
+<body onload="submit()">
+  <!-- NavBar/Input -->
+    <nav>
+        <div class="bubble__container">
+          <div class="bubble__input">
+            <form method="POST" action="index" id="userInputForm">
+            <input type="text" class="bubble__form" name="usertext" id="userInput" cols="30" rows="10" placeholder="Enter text here..."></input>
+            </form>
+        </div>
+        </div>
+      </nav> 
+  <!-- Message Board -->
+  <div class="input__showcase">
+    <div class="input__column">
+      <div class="input__container-left" id="leftContainer">
+
+      </div>
+    </div>
+    <div class="input__column">
+      <div class="input__container-right" id="rightContainer">
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

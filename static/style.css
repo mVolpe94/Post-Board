@@ -1,0 +1,121 @@
+* {
+  font-family: 'Ubuntu Mono', monospace;
+  margin: 0px;
+}
+
+body {
+  background-image: url("images/noise.png");
+  background-attachment: fixed;
+}
+
+nav {
+  display: block;
+  padding: 10px;
+  position: sticky;
+  top: 10px;
+}
+
+#userInputForm {
+    
+    width: 900px;
+}
+
+.bubble__container {
+  
+  max-width: 900px;
+  text-align: left;
+  margin: auto;
+  height:64px;
+}
+
+.bubble__input {
+  display: flex;
+  padding: 0px;
+  width: 100%;
+  text-align: left;
+  color: #000;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.bubble__formContainer {
+  display: flex;
+  width: 100%;
+}
+
+.bubble__form {
+  box-sizing: border-box;
+  border: 1px solid lightgray;
+  border-radius: 28px;
+  padding: 16px;
+  outline: none;
+  width: 100%;
+  font-size: 1.5rem;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 100%;
+  transition: height 2s ease-in-out;
+  resize: none;
+  box-shadow: 3px 3px 5px lightslategray;
+}
+
+
+/* Body */
+
+.input__showcase {
+  margin: 0px auto;
+  margin-top: 10px;
+  padding: 0px 10px;
+  max-width: 900px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input__container-left {
+  margin: 0px;
+  width: 99%;
+  margin-right: 5px;
+}
+
+.input__container-right {
+  margin: 0px;
+  width: 99%;
+  margin-left: 5px;
+}
+
+.input__data {
+  margin: 0px;
+  margin-bottom: 10px;
+  background-color: lightgray;
+  font-size: 1.5rem;
+  border-radius: 28px;
+  padding: 16px 20px;
+  box-shadow: 2px 2px 5px lightslategray;
+  word-wrap: break-word;
+}
+
+.input__column {
+  width: 50%;
+  margin: 0px;
+}
+
+.input__container {
+  margin: 0px auto;
+  max-width: 920px;
+  padding: 0px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input__value {
+  
+  justify-content: left;
+  align-items: flex-start;
+  margin: 10px 5px;
+  padding: 16px 20px;
+  background-color: rgb(197, 186, 186);
+  font-size: 1.5rem;
+  border-radius: 28px;
+  width: 43%;
+}
