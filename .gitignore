@@ -3,3 +3,8 @@ static/images/noise1.png
 static/images/noise2.png
 static/images/noise4.png
 static/images/send-arrow.svg
+__pycache__/
+Include/
+Lib/
+old/
+Scripts/
