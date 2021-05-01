@@ -9,3 +9,4 @@ Lib/
 old/
 Scripts/
 message_database.db
+*.db
