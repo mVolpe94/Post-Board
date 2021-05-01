@@ -7,6 +7,7 @@ import database
 database_name = 'message_database.db'
 database_columns = {'message_id':'INTEGER PRIMARY KEY', 'user_id':'TEXT', 'message':'TEXT'}
 message_table_name = 'message_table'
+user_id = "12345"
 
 
 app = Flask(__name__)
@@ -30,7 +31,6 @@ def read_database():
 def write_data():
   if request.method == 'POST':
     message = request.form['userInput']
-    
     database.add_to_database(database_name, database_columns, message_table_name, user_id, message)
     print(message)
   return message

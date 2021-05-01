@@ -1,6 +1,5 @@
 import sqlite3
 
-
 # Creates an SQLite3 CREATE command using user inputted columns and data types
 # Takes in a dictionary of key column names and value data types
 
@@ -35,7 +34,7 @@ def insert(table_name, column_labels, *args):
     else:
       value_str += "'" + arg + "'" + ', '
   value_str = value_str.rstrip(', ')
-
+  
   return f"INSERT INTO {table_name}({column_str}) VALUES ({value_str})"
 
 
@@ -52,6 +51,8 @@ def add_to_database(database_name, database_columns, table_name, user_id, messag
   column_labels = []
   for key in database_columns_keys:
     column_labels.append(key)
+
+  message = message.replace("'", "&#39;")
 
   open_table = create(table_name, database_columns)
   input_data = insert(table_name, column_labels, "NULL", user_id, message)
