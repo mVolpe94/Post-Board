@@ -7,7 +7,7 @@ import database
 database_name = 'message_database.db'
 database_columns = {'message_id':'INTEGER PRIMARY KEY', 'user_id':'TEXT', 'message':'TEXT'}
 message_table_name = 'message_table'
-user_id = "12345"
+user_id = "test"
 
 
 app = Flask(__name__)
@@ -37,8 +37,8 @@ def write_data():
 
 
 
-# #Finish detecting cookie on client system, 
-# # if cookie doesnt exist, create one, use that uuid for user_id in db
+# Finish detecting cookie on client system, 
+# if cookie doesnt exist, create one, use that uuid for user_id in db
 
 
 if __name__ == "__main__":

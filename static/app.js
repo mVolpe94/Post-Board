@@ -95,7 +95,17 @@ function formSubmit(e){
     }
 }
 
-function submit() {
+function loadData() {
     var textBox = document.getElementById("userInputForm");
     textBox.addEventListener("submit", formSubmit);
+    var xhr = new XMLHttpRequest();
+//Add functionality to get database data
+    xhr.onload = function(){
+      console.log(this.status)
+      if(this.status == 200){
+        
+      }
+      xhr.open('GET', '/read', true);
+      xhr.send();
+    }
 }
