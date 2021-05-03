@@ -12,12 +12,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
   <script src="{{ url_for('static', filename = 'app.js') }}"></script>
 </head>
-<body onload="loadData()">
+<body onload="onLoad()">
   <!-- NavBar/Input -->
     <nav>
         <div class="bubble__container">
           <div class="bubble__input">
-            <form method="POST" action="index" id="userInputForm">
+            <form method="GET" action="read-db" id="userInputForm">
             <input type="text" class="bubble__form" name="usertext" id="userInput" cols="30" rows="10" placeholder="Enter text here..."></input>
             </form>
         </div>

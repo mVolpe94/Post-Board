@@ -95,17 +95,21 @@ function formSubmit(e){
     }
 }
 
+function onLoad() {
+  var textBox = document.getElementById("userInputForm");
+  textBox.addEventListener("submit", loadData);
+  loadData();
+}
+
 function loadData() {
-    var textBox = document.getElementById("userInputForm");
-    textBox.addEventListener("submit", formSubmit);
     var xhr = new XMLHttpRequest();
 //Add functionality to get database data
     xhr.onload = function(){
       console.log(this.status)
       if(this.status == 200){
-        
+        console.log("MADE IT HERE!!")
       }
-      xhr.open('GET', '/read', true);
+      xhr.open('GET', '/read-db', true);
       xhr.send();
     }
 }
