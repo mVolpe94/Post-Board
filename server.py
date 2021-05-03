@@ -40,6 +40,7 @@ def write_data():
     message = request.form['userInput']
     database.add_to_database(database_name, database_columns, message_table_name, user_id, message)
     print(message)
+    
   return message
 
 
