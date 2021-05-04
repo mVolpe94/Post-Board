@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import database
 
+#THIS IS JUST A TEST JUST A TEST A TEST IT IS JUST!
 
 # DataBase Configuration
 database_name = 'message_database.db'

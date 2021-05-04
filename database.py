@@ -63,7 +63,7 @@ def add_to_database(database_name, database_columns, table_name, user_id, messag
 
   conn.close()
 
-  return print("Done.")
+  return print("Added to Database")
 
 
 # Returns either a list of data in a specified column in the table given, 

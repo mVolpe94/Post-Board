@@ -33,8 +33,8 @@ function heightPlacement(leftSide, rightSide) {
     return side;
 }
 
-function createFr(element) {
-    addToDatabase(element);
+function createFr() {
+    
     let leftContainer = document.getElementById("leftContainer");
     leftContainer.style.visibility = "hidden";
     let rightContainer = document.getElementById("rightContainer");
@@ -71,45 +71,81 @@ function createFr(element) {
     rightContainer.style.visibility = "visible";
 }
 
-function formSubmit(e){
-    e.preventDefault();
-    var textBox = document.getElementById('userInput')
-    if(textBox.value != ''){
-        var xhr = new XMLHttpRequest();
+//I need to take user input into database, gather message data from database, display message data on site
+function formSubmitter(e){
+  e.preventDefault();
+  var textBox = document.getElementById('userInput');
+  if(textBox.value != ''){
+    var sends = new XMLHttpRequest();
 
-        xhr.onload = function(){
-            console.log(this.status)
-            if(this.status == 200){
-
-                createFr(textBox);
-                htmlInject(textBox);
-                cleartext(textBox);
-            }
+    sends.open("POST", "/index", false);
+    sends.onload = function(){
+      console.log(this.status);
+      if(this.status == 200){
+        console.log(this.response);
+        };
+      };
+    
+    sends.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    sends.send("userInput=" + textBox.value);
+    
+    var read = new XMLHttpRequest();
+    read.open('GET', '/read-db', false)
+    read.onload = function(){
+      if(this.status == 200){
+        var messages = JSON.parse(this.responseText)
+        dataBase.splice(0, dataBase.length)
+        for (id in messages){
+          dataBase.unshift(messages[id])
+        console.log(dataBase)
+        
+        createFr()
         }
-        xhr.open('POST', '/index', true);
-        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.onerror = function(){
-            console.log("Request Error...");
-        }
-        xhr.send("userInput=" + document.getElementById('userInput').value);
+      }
     }
+    read.send();
+  };
 }
+
+// function formSubmit(e){
+//     e.preventDefault();
+//     var textBox = document.getElementById('userInput')
+//     if(textBox.value != ''){
+//         var xhr = new XMLHttpRequest();
+
+//         xhr.onload = function(){
+//             console.log(this.status)
+//             if(this.status == 200){
+//                 console.log("MESSAGE DATA: " + this.responseText)
+//                 createFr(textBox);
+//                 htmlInject(textBox);
+//                 cleartext(textBox);
+//             }
+//         }
+//         xhr.open('POST', '/index', true);
+//         xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+//         xhr.onerror = function(){
+//             console.log("Request Error...");
+//         }
+//         xhr.send("userInput=" + document.getElementById('userInput').value);
+//     }
+// }
 
 function onLoad() {
   var textBox = document.getElementById("userInputForm");
-  textBox.addEventListener("submit", loadData);
-  loadData();
+  textBox.addEventListener("submit", formSubmitter);
+  console.log("loaded event listener")
 }
 
-function loadData() {
-    var xhr = new XMLHttpRequest();
-//Add functionality to get database data
-    xhr.onload = function(){
-      console.log(this.status)
-      if(this.status == 200){
-        console.log("MADE IT HERE!!")
-      }
-      xhr.open('GET', '/read-db', true);
-      xhr.send();
-    }
-}
+// function loadData() {
+//     var xhr = new XMLHttpRequest();
+// //Add functionality to get database data
+//     xhr.onload = function(){
+//       console.log(this.status)
+//       if(this.status == 200){
+//         console.log("MADE IT HERE!!")
+//       }
+//       xhr.open('GET', '/read-db', true);
+//       xhr.send();
+//     }
+// }
