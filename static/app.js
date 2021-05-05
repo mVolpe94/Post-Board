@@ -3,15 +3,15 @@ let dataBase = [];
 //Resets the input element given
 function cleartext(element) {
     element.value = "";
-}
+};
 
 //Adds user input to browser-side dataBase array
 function addToDatabase(element) {
     let textData = element.value;
     if (textData != "") {
         dataBase.unshift(textData);
-    }
-}
+    };
+};
 
 //Determines which side to place the message on using the 
 //pixel height of each side
@@ -25,14 +25,14 @@ function heightPlacement(leftSide, rightSide) {
 
     if(leftHeight > rightHeight) {
         side = "right";
-    }
+    };
     return side;
-}
+};
 
 //Generates document fragments to display each side of the message board
 function createFr(element=null) {
     if (element != null){
-      addToDatabase(element)
+      addToDatabase(element);
     }
     let leftContainer = document.getElementById("leftContainer");
     leftContainer.style.visibility = "hidden";
@@ -46,10 +46,10 @@ function createFr(element=null) {
 
     while (leftContainer.firstChild) {
         leftContainer.removeChild(leftContainer.firstChild);
-    }
+    };
     while (rightContainer.firstChild) {
         rightContainer.removeChild(rightContainer.firstChild);
-    }
+    };
 
     dataBase.forEach(item => {
         let div = document.createElement('div');
@@ -57,15 +57,15 @@ function createFr(element=null) {
         div.className = "input__data";
         if (side === "left") {
             dfL.appendChild(div);
-        }
+        };
         if (side === "right") {
             dfR.appendChild(div);
-        }
+        };
 
         leftContainer.appendChild(dfL);
         rightContainer.appendChild(dfR);
         side = heightPlacement(leftContainer, rightContainer);
-    })
+    });
     leftContainer.style.visibility = "visible";
     rightContainer.style.visibility = "visible";
 }
@@ -78,22 +78,22 @@ function formSubmit(e){
         var xhr = new XMLHttpRequest();
 
         xhr.onload = function(){
-            console.log(this.status)
+            console.log(this.status);
             if(this.status == 200){
               
                 createFr(textBox);
                 // htmlInject(textBox);
                 cleartext(textBox);
-            }
-        }
+            };
+        };
         xhr.open('POST', '/index', true);
         xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
         xhr.onerror = function(){
             console.log("Request Error...");
-        }
+        };
         xhr.send("userInput=" + textBox.value);
-    }
-}
+    };
+};
 
 //onload function to produce messages from server database
 function loadData() {
@@ -110,11 +110,10 @@ function loadData() {
         for (id in messages){ //Maybe run a check if messages[id] is in dataBase array, if not, add messages[id], may be faster
           dataBase.unshift(messages[id]);
         };
-        console.log(dataBase)
-        createFr()
-      }
-
-    }
+        console.log(dataBase);
+        createFr();
+      };
+    };
     xhr.open('GET', '/read-db', true);
     xhr.send();
-}
+};
