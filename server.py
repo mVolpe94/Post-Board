@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import sqlite3
 import database
 
@@ -23,8 +23,15 @@ def post_page():
 
 @app.route('/read-db', methods=["GET"])
 def read_database():
-  if request.method == 'GET':
-    return database.read_table(database_name, message_table_name, "messages")
+    if request.method == 'GET':
+      data_json = {}
+      message_count = 0
+      inputs = database.read_table(database_name, message_table_name, "message")
+      for messages in inputs:
+        data_json.update({str(message_count):messages})
+        message_count += 1
+      print(data_json)
+      return jsonify(data_json)
 
 
 @app.route('/index', methods=["POST"])

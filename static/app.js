@@ -1,17 +1,11 @@
 let dataBase = [];
 
-
+//Resets the input element given
 function cleartext(element) {
     element.value = "";
 }
 
-function htmlInject(element) {
-    var textData = element.value;
-    console.log(textData);
-    console.log(dataBase);
-    return
-}
-
+//Adds user input to browser-side dataBase array
 function addToDatabase(element) {
     let textData = element.value;
     if (textData != "") {
@@ -19,6 +13,8 @@ function addToDatabase(element) {
     }
 }
 
+//Determines which side to place the message on using the 
+//pixel height of each side
 function heightPlacement(leftSide, rightSide) {
     let leftHeight = leftSide.clientHeight;
     let rightHeight = rightSide.clientHeight;
@@ -33,8 +29,11 @@ function heightPlacement(leftSide, rightSide) {
     return side;
 }
 
-function createFr(element) {
-    addToDatabase(element);
+//Generates document fragments to display each side of the message board
+function createFr(element=null) {
+    if (element != null){
+      addToDatabase(element)
+    }
     let leftContainer = document.getElementById("leftContainer");
     leftContainer.style.visibility = "hidden";
     let rightContainer = document.getElementById("rightContainer");
@@ -71,6 +70,7 @@ function createFr(element) {
     rightContainer.style.visibility = "visible";
 }
 
+// Sends user input to screen and server database
 function formSubmit(e){
     e.preventDefault();
     var textBox = document.getElementById('userInput')
@@ -80,9 +80,9 @@ function formSubmit(e){
         xhr.onload = function(){
             console.log(this.status)
             if(this.status == 200){
-
+              
                 createFr(textBox);
-                htmlInject(textBox);
+                // htmlInject(textBox);
                 cleartext(textBox);
             }
         }
@@ -91,21 +91,30 @@ function formSubmit(e){
         xhr.onerror = function(){
             console.log("Request Error...");
         }
-        xhr.send("userInput=" + document.getElementById('userInput').value);
+        xhr.send("userInput=" + textBox.value);
     }
 }
 
+//onload function to produce messages from server database
 function loadData() {
     var textBox = document.getElementById("userInputForm");
     textBox.addEventListener("submit", formSubmit);
+
     var xhr = new XMLHttpRequest();
-//Add functionality to get database data
+
     xhr.onload = function(){
-      console.log(this.status)
+      console.log(this.status);
       if(this.status == 200){
-        
+        var messages = JSON.parse(this.responseText);
+        dataBase.splice(0, dataBase.length);
+        for (id in messages){ //Maybe run a check if messages[id] is in dataBase array, if not, add messages[id], may be faster
+          dataBase.unshift(messages[id]);
+        };
+        console.log(dataBase)
+        createFr()
       }
-      xhr.open('GET', '/read', true);
-      xhr.send();
+
     }
+    xhr.open('GET', '/read-db', true);
+    xhr.send();
 }
