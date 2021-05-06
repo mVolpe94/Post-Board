@@ -50,8 +50,7 @@ def write_data():
           user_id = new_id
           break
       res.set_cookie('user_id', f'{user_id}',
-        expires='never',
-        )
+        expires='never')
     database.add_to_database(database_name, database_columns, message_table_name, user_id, message)
     print(message)
   return res
