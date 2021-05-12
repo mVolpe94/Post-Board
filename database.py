@@ -73,19 +73,21 @@ def read_table(database_name, table_name, column=None):
   table_data = []
   conn = sqlite3.connect(database_name)
   cur = conn.cursor()
-
-  if column:
-    cur.execute(f"""SELECT {column} FROM {table_name}""")
-    for row in cur:
-      table_data.append(row[0])
-    conn.close()
-    return table_data
-  else:
-    cur.execute(f"""SELECT * FROM {table_name}""")
-    for row in cur:
-      table_data.append(row)
-    conn.close()
-    return table_data
+  try:
+    if column:
+      cur.execute(f"""SELECT {column} FROM {table_name}""")
+      for row in cur:
+        table_data.append(row[0])
+      conn.close()
+      return table_data
+    else:
+      cur.execute(f"""SELECT * FROM {table_name}""")
+      for row in cur:
+        table_data.append(row)
+      conn.close()
+      return table_data
+  except:
+    return print("Error, table not found.")
 
 
 if __name__ == '__main__':
