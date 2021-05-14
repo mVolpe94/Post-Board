@@ -70,28 +70,47 @@ function createFr(element=null) {
     rightContainer.style.visibility = "visible";
 }
 
+
+function getMillisecondsUTC(){
+  var date = new Date();
+  var year = date.getUTCFullYear();
+  var month = date.getUTCMonth();
+  var day = date.getUTCDate();
+  var hour = date.getUTCHours();
+  var minute = date.getUTCMinutes();
+  var second = date.getUTCSeconds();
+  var milliseconds = date.getUTCMilliseconds();
+  var epochUTC = Date.UTC(year, month, day, hour, minute, second, milliseconds);
+  return epochUTC
+}
+
 // Sends user input to screen and server database
 function formSubmit(e){
     e.preventDefault();
     var textBox = document.getElementById('userInput')
     if(textBox.value != ''){
-        var xhr = new XMLHttpRequest();
+      var date = getMillisecondsUTC();
+      var jsonData = {'message': textBox.value, 'time': date}
+      var jsonString = JSON.stringify(jsonData)
 
-        xhr.onload = function(){
-            console.log(this.status);
-            if(this.status == 200){
-              
-                createFr(textBox);
-                // htmlInject(textBox);
-                cleartext(textBox);
-            };
+      var xhr = new XMLHttpRequest();
+
+      xhr.onload = function(){
+        console.log(this.status);
+        if(this.status == 200){
+
+          createFr(textBox);
+          // htmlInject(textBox);
+          cleartext(textBox);
         };
-        xhr.open('POST', '/index', true);
-        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.onerror = function(){
-            console.log("Request Error...");
-        };
-        xhr.send("userInput=" + textBox.value);
+      };
+      xhr.open('POST', '/index', true);
+      xhr.setRequestHeader('content-type', 'application/json');
+      xhr.onerror = function(){
+        console.log("Request Error...");
+      };
+      console.log(jsonString)
+      xhr.send(jsonString);
     };
 };
 

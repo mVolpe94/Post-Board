@@ -36,8 +36,9 @@ def read_database():
 @app.route('/index', methods=["POST"])
 def write_data():
   if request.method == 'POST':
-    message = request.form['userInput']
-    res = make_response(message)
+    # message = request.form['userInput']
+    data = request.get_json()
+    res = make_response(data['message'])
     cookie = request.cookies
     user_id = cookie.get('user_id')
     print(user_id)
@@ -51,8 +52,8 @@ def write_data():
           break
       res.set_cookie('user_id', f'{user_id}',
         expires='never')
-    database.add_to_database(database_name, database_columns, message_table_name, user_id, message)
-    print(message)
+    database.add_to_database(database_name, database_columns, message_table_name, user_id, data['message'])
+    print(data)
   return res
 
 
