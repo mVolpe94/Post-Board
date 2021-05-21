@@ -3,16 +3,20 @@ import database
 import time
 import random as rand
 
+# ToDo: remove client-side time from database, add function to get time on server-side and input that to the database,
+# deal with time and timezones on client side when posting and loading.
+# Also, disable python extensions, add Code-Runner and Syntax Highlighter by Peshkov and tabnine
 
 # DataBase Configuration
 database_name = 'message_database.db'
-database_columns = {'message_id':'INTEGER PRIMARY KEY', 'user_id':'TEXT', 'message':'TEXT'}
+database_columns = {'message_id': 'INTEGER PRIMARY KEY', 'user_id': 'TEXT', 'message': 'TEXT', 'time': 'TEXT'}
 message_table_name = 'message_table'
 
 
 app = Flask(__name__)
 # app.secret_key = "]e${\xdc\x11\x8f"
 app.debug = True
+
 
 @app.route('/', methods=["GET"])
 def post_page():
@@ -25,12 +29,15 @@ def read_database():
     if request.method == 'GET':
       data_json = {}
       message_count = 0
-      inputs = database.read_table(database_name, message_table_name, "message")
-      for messages in inputs:
-        data_json.update({str(message_count):messages})
-        message_count += 1
-      # print(data_json)
-      return jsonify(data_json)
+      inputs = database.read_table(database_name, message_table_name)
+      if inputs != None:
+        for messages in inputs:
+          data_json.update({str(message_count):[messages[2], messages[3]]})
+          message_count += 1
+        # print(data_json)
+        return jsonify(data_json)
+      else:
+        return "Error: Table does not exist"
 
 
 @app.route('/index', methods=["POST"])
@@ -52,7 +59,9 @@ def write_data():
           break
       res.set_cookie('user_id', f'{user_id}',
         expires='never')
-    database.add_to_database(database_name, database_columns, message_table_name, user_id, data['message'])
+    # Determine time of input here instead of taking from client-side js##############################
+    epoch = round(time.time())
+    database.add_to_database(database_name, database_columns, message_table_name, user_id, data['message'], epoch)
     print(data)
   return res
 

@@ -38,11 +38,12 @@ def insert(table_name, column_labels, *args):
   return f"INSERT INTO {table_name}({column_str}) VALUES ({value_str})"
 
 
-# Adds data to a selected database
+# Adds data to a selected database (proprietary)
 
-def add_to_database(database_name, database_columns, table_name, user_id, message):
+def add_to_database(database_name, database_columns, table_name, user_id, message, time):
   print(f"Adding message ('{message}') to the database...")
   print(f"Under User_ID: {user_id}")
+  print(f"At {time}")
 
   conn = sqlite3.connect(database_name)
   cur = conn.cursor()
@@ -55,7 +56,7 @@ def add_to_database(database_name, database_columns, table_name, user_id, messag
   message = message.replace("'", "&#39;")
 
   open_table = create(table_name, database_columns)
-  input_data = insert(table_name, column_labels, "NULL", user_id, message)
+  input_data = insert(table_name, column_labels, "NULL", user_id, message, time)
 
   cur.execute(open_table)
   cur.execute(input_data)
@@ -87,7 +88,7 @@ def read_table(database_name, table_name, column=None):
       conn.close()
       return table_data
   except:
-    return print("Error, table not found.")
+    return print("Error: Table does not exist")
 
 
 if __name__ == '__main__':
@@ -104,3 +105,4 @@ if __name__ == '__main__':
     add_to_database(database_name, database_columns, table1, user_id, data[index])
 
   print(read_table(database_name, table1, 'message_id'))
+

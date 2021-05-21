@@ -33,6 +33,7 @@ function heightPlacement(leftSide, rightSide) {
 function createFr(element=null) {
     if (element != null){
       addToDatabase(element);
+      //Place client side time functions here!!!!!!!!
     }
     let leftContainer = document.getElementById("leftContainer");
     leftContainer.style.visibility = "hidden";
@@ -72,16 +73,22 @@ function createFr(element=null) {
 
 
 function getMillisecondsUTC(){
-  var date = new Date();
-  var year = date.getUTCFullYear();
-  var month = date.getUTCMonth();
-  var day = date.getUTCDate();
-  var hour = date.getUTCHours();
-  var minute = date.getUTCMinutes();
-  var second = date.getUTCSeconds();
-  var milliseconds = date.getUTCMilliseconds();
-  var epochUTC = Date.UTC(year, month, day, hour, minute, second, milliseconds);
+  // var date = new Date();
+  // var year = date.getUTCFullYear();
+  // var month = date.getUTCMonth();
+  // var day = date.getUTCDate();
+  // var hour = date.getUTCHours();
+  // var minute = date.getUTCMinutes();
+  // var second = date.getUTCSeconds();
+  // var milliseconds = date.getUTCMilliseconds();
+  // var epochUTC = Date.UTC(year, month, day, hour, minute, second, milliseconds);
+  epochUTC = Date.now();
   return epochUTC
+}
+
+
+function timeZoneAdjust(utcTime){
+
 }
 
 // Sends user input to screen and server database
@@ -89,12 +96,11 @@ function formSubmit(e){
     e.preventDefault();
     var textBox = document.getElementById('userInput')
     if(textBox.value != ''){
-      var date = getMillisecondsUTC();
-      var jsonData = {'message': textBox.value, 'time': date}
+      var date = Date.now()
+      var jsonData = {'message': textBox.value, 'time': date} //Take out date
       var jsonString = JSON.stringify(jsonData)
 
       var xhr = new XMLHttpRequest();
-
       xhr.onload = function(){
         console.log(this.status);
         if(this.status == 200){
@@ -127,7 +133,8 @@ function loadData() {
         var messages = JSON.parse(this.responseText);
         dataBase.splice(0, dataBase.length);
         for (id in messages){ //Maybe run a check if messages[id] is in dataBase array, if not, add messages[id], may be faster
-          dataBase.unshift(messages[id]);
+          messageTime = messages[id][1];
+          dataBase.unshift(messages[id][0]);
         };
         console.log(dataBase);
         createFr();
