@@ -8,16 +8,10 @@ function cleartext(element) {
 
 //Adds user input to browser-side dataBase array
 function addToDatabase(element, time) {
-    // let textData = element.value;
-    // if (textData != "") {
-    //     dataBase.unshift(textData);
-    // };
-    let textData = element.value;               /////////////////////////FIND WAY TO ADD KV PAIR TO message_list
-    let timeData = time;
-    if (textData != ''){
-      let messageNum = Object.keys(message_list).length;
-      message_list[messageNum] = [textData, timeData];
-    }
+    let textData = element.value;
+    if (textData != "") {
+        dataBase.unshift([textData, time]);
+    };
 };
 
 //Determines which side to place the message on using the 
@@ -59,36 +53,21 @@ function createFr(element=null, time=null) {
         rightContainer.removeChild(rightContainer.firstChild);
     };
 
-    // dataBase.forEach(item => {
-    //     let div = document.createElement('div');
-    //     div.textContent = item;
-    //     div.className = "input__data";
-    //     if (side === "left") {
-    //         dfL.appendChild(div);
-    //     };
-    //     if (side === "right") {
-    //         dfR.appendChild(div);
-    //     };
+    dataBase.forEach(item => {
+        let div = document.createElement('div');
+        div.textContent = item[0];
+        div.className = "input__data";
+        if (side === "left") {
+            dfL.appendChild(div);
+        };
+        if (side === "right") {
+            dfR.appendChild(div);
+        };
 
-    //     leftContainer.appendChild(dfL);
-    //     rightContainer.appendChild(dfR);
-    //     side = heightPlacement(leftContainer, rightContainer);
-    // });
-    console.log(message_list)
-    for (id in message_list) {
-      let message_div = document.createElement('div');
-      message_div.textContent = message_list[id][0];
-      message_div.className = 'input__data';
-      if (side == 'left') {
-        dfL.appendChild(message_div);
-      };
-      if (side == 'right') {
-        dfR.appendChild(message_div);
-      }
-      leftContainer.appendChild(dfL);
-      rightContainer.appendChild(dfR);
-      side = heightPlacement(leftContainer, rightContainer)
-    }
+        leftContainer.appendChild(dfL);
+        rightContainer.appendChild(dfR);
+        side = heightPlacement(leftContainer, rightContainer);
+    });
 
     leftContainer.style.visibility = "visible";
     rightContainer.style.visibility = "visible";
@@ -96,15 +75,6 @@ function createFr(element=null, time=null) {
 
 
 function getMillisecondsUTC(){
-  // var date = new Date();
-  // var year = date.getUTCFullYear();
-  // var month = date.getUTCMonth();
-  // var day = date.getUTCDate();
-  // var hour = date.getUTCHours();
-  // var minute = date.getUTCMinutes();
-  // var second = date.getUTCSeconds();
-  // var milliseconds = date.getUTCMilliseconds();
-  // var epochUTC = Date.UTC(year, month, day, hour, minute, second, milliseconds);
   epochUTC = Date.now();
   return epochUTC
 }
@@ -129,7 +99,6 @@ function formSubmit(e){
         if(this.status == 200){
 
           createFr(textBox, date);
-          // htmlInject(textBox);
           cleartext(textBox);
         };
       };
@@ -155,13 +124,12 @@ function loadData() {
       if(this.status == 200){
         var messages = JSON.parse(this.responseText);
         
-        message_list = messages
-        console.log(message_list)
-        // dataBase.splice(0, dataBase.length);
-        // for (id in messages){
-        //   messageTime = messages[id][1];
-        //   dataBase.unshift(messages[id][0]);
-        // };
+        dataBase.splice(0, dataBase.length);
+        for (id in messages){
+          let messageData = messages[id][0];
+          let messageTime = messages[id][1];
+          dataBase.unshift([messageData, messageTime]);
+        };
         console.log(dataBase);
         createFr();
       };
