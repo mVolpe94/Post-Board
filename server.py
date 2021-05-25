@@ -30,6 +30,7 @@ def read_database():
       data_json = {}
       message_count = 0
       inputs = database.read_table(database_name, message_table_name)
+
       if inputs != None:
         for messages in inputs:
           data_json.update({str(message_count):[messages[2], messages[3]]})

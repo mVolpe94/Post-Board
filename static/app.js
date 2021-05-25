@@ -1,4 +1,5 @@
 let dataBase = [];
+let message_list = {};
 
 //Resets the input element given
 function cleartext(element) {
@@ -6,11 +7,17 @@ function cleartext(element) {
 };
 
 //Adds user input to browser-side dataBase array
-function addToDatabase(element) {
-    let textData = element.value;
-    if (textData != "") {
-        dataBase.unshift(textData);
-    };
+function addToDatabase(element, time) {
+    // let textData = element.value;
+    // if (textData != "") {
+    //     dataBase.unshift(textData);
+    // };
+    let textData = element.value;               /////////////////////////FIND WAY TO ADD KV PAIR TO message_list
+    let timeData = time;
+    if (textData != ''){
+      let messageNum = Object.keys(message_list).length;
+      message_list[messageNum] = [textData, timeData];
+    }
 };
 
 //Determines which side to place the message on using the 
@@ -20,8 +27,8 @@ function heightPlacement(leftSide, rightSide) {
     let rightHeight = rightSide.clientHeight;
     let side = "left";
 
-    console.log(leftHeight);
-    console.log(rightHeight);
+    // console.log(leftHeight);
+    // console.log(rightHeight);
 
     if(leftHeight > rightHeight) {
         side = "right";
@@ -30,9 +37,9 @@ function heightPlacement(leftSide, rightSide) {
 };
 
 //Generates document fragments to display each side of the message board
-function createFr(element=null) {
+function createFr(element=null, time=null) {
     if (element != null){
-      addToDatabase(element);
+      addToDatabase(element, time);
       //Place client side time functions here!!!!!!!!
     }
     let leftContainer = document.getElementById("leftContainer");
@@ -52,21 +59,37 @@ function createFr(element=null) {
         rightContainer.removeChild(rightContainer.firstChild);
     };
 
-    dataBase.forEach(item => {
-        let div = document.createElement('div');
-        div.textContent = item;
-        div.className = "input__data";
-        if (side === "left") {
-            dfL.appendChild(div);
-        };
-        if (side === "right") {
-            dfR.appendChild(div);
-        };
+    // dataBase.forEach(item => {
+    //     let div = document.createElement('div');
+    //     div.textContent = item;
+    //     div.className = "input__data";
+    //     if (side === "left") {
+    //         dfL.appendChild(div);
+    //     };
+    //     if (side === "right") {
+    //         dfR.appendChild(div);
+    //     };
 
-        leftContainer.appendChild(dfL);
-        rightContainer.appendChild(dfR);
-        side = heightPlacement(leftContainer, rightContainer);
-    });
+    //     leftContainer.appendChild(dfL);
+    //     rightContainer.appendChild(dfR);
+    //     side = heightPlacement(leftContainer, rightContainer);
+    // });
+    console.log(message_list)
+    for (id in message_list) {
+      let message_div = document.createElement('div');
+      message_div.textContent = message_list[id][0];
+      message_div.className = 'input__data';
+      if (side == 'left') {
+        dfL.appendChild(message_div);
+      };
+      if (side == 'right') {
+        dfR.appendChild(message_div);
+      }
+      leftContainer.appendChild(dfL);
+      rightContainer.appendChild(dfR);
+      side = heightPlacement(leftContainer, rightContainer)
+    }
+
     leftContainer.style.visibility = "visible";
     rightContainer.style.visibility = "visible";
 }
@@ -105,7 +128,7 @@ function formSubmit(e){
         console.log(this.status);
         if(this.status == 200){
 
-          createFr(textBox);
+          createFr(textBox, date);
           // htmlInject(textBox);
           cleartext(textBox);
         };
@@ -131,11 +154,14 @@ function loadData() {
       console.log(this.status);
       if(this.status == 200){
         var messages = JSON.parse(this.responseText);
-        dataBase.splice(0, dataBase.length);
-        for (id in messages){ //Maybe run a check if messages[id] is in dataBase array, if not, add messages[id], may be faster
-          messageTime = messages[id][1];
-          dataBase.unshift(messages[id][0]);
-        };
+        
+        message_list = messages
+        console.log(message_list)
+        // dataBase.splice(0, dataBase.length);
+        // for (id in messages){
+        //   messageTime = messages[id][1];
+        //   dataBase.unshift(messages[id][0]);
+        // };
         console.log(dataBase);
         createFr();
       };
