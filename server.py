@@ -62,6 +62,7 @@ def write_data():
         expires='never')
     # Determine time of input here instead of taking from client-side js##############################
     epoch = round(time.time())
+    epoch = epoch * 100
     database.add_to_database(database_name, database_columns, message_table_name, user_id, data['message'], epoch)
     print(data)
   return res

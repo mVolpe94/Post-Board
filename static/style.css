@@ -89,7 +89,7 @@ nav {
   background-color: lightgray;
   font-size: 1.5rem;
   border-radius: 28px;
-  padding: 16px 20px;
+  padding: 16px 20px 5px;
   box-shadow: 2px 2px 5px lightslategray;
   word-wrap: break-word;
 }
@@ -118,4 +118,12 @@ nav {
   font-size: 1.5rem;
   border-radius: 28px;
   width: 43%;
+}
+
+.input__time {
+  text-align: right;
+  color: rgb(172, 171, 171);
+  padding-bottom: 0px;
+  padding-top: 3px;
+  font-size: 16px;
 }

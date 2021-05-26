@@ -36,6 +36,7 @@ function createFr(element=null, time=null) {
       addToDatabase(element, time);
       //Place client side time functions here!!!!!!!!
     }
+
     let leftContainer = document.getElementById("leftContainer");
     leftContainer.style.visibility = "hidden";
     let rightContainer = document.getElementById("rightContainer");
@@ -54,14 +55,20 @@ function createFr(element=null, time=null) {
     };
 
     dataBase.forEach(item => {
-        let div = document.createElement('div');
-        div.textContent = item[0];
-        div.className = "input__data";
+        let postTime = timeZoneAdjust(item[1])
+        let textDiv = document.createElement('div');
+        let timeDiv = document.createElement('div');
+        textDiv.textContent = item[0];
+        textDiv.className = "input__data";
+        timeDiv.textContent = postTime;
+        timeDiv.className = "input__time";
         if (side === "left") {
-            dfL.appendChild(div);
+            textDiv.appendChild(timeDiv);
+            dfL.appendChild(textDiv);
         };
         if (side === "right") {
-            dfR.appendChild(div);
+            textDiv.appendChild(timeDiv);
+            dfR.appendChild(textDiv);
         };
 
         leftContainer.appendChild(dfL);
@@ -81,7 +88,8 @@ function getMillisecondsUTC(){
 
 
 function timeZoneAdjust(utcTime){
-
+  timeNow = new Date(utcTime);
+  return timeNow
 }
 
 // Sends user input to screen and server database
