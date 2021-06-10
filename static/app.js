@@ -1,6 +1,9 @@
 let dataBase = [];
 let message_list = {};
 
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 //Resets the input element given
 function cleartext(element) {
     element.value = "";
@@ -9,6 +12,8 @@ function cleartext(element) {
 //Adds user input to browser-side dataBase array
 function addToDatabase(element, time) {
     let textData = element.value;
+    time = parseInt(time);
+    console.log(time)
     if (textData != "") {
         dataBase.unshift([textData, time]);
     };
@@ -88,8 +93,38 @@ function getMillisecondsUTC(){
 
 
 function timeZoneAdjust(utcTime){
-  timeNow = new Date(utcTime);
-  return timeNow
+  utcTime = parseInt(utcTime)
+  var timeNow = new Date(utcTime);
+  var timeString = timeNow.toString();
+  var timeList = timeString.split(" ");
+  var timeOutput = ""
+
+  timeList.forEach(item => {
+    if (timeList.indexOf(item) < 6){
+      if (item == timeList[4]){
+        var curTime = item.split(":");
+        console.log(curTime)
+        var hour = parseInt(curTime[0])
+        if (hour >= 12){
+          hour -= 12;
+          curTime[2] = "PM";
+        }
+        else {
+          curTime[2] = "AM";
+        }
+        if (hour == 0){
+          hour = 12
+        }
+      item = hour + ":" + curTime[1] + " " + curTime[2]
+      }
+      if (item == timeList[2]){
+        timeOutput += item + ", "
+      } else {
+          timeOutput += item + " "
+        }
+    }
+  });
+  return timeOutput
 }
 
 // Sends user input to screen and server database
@@ -98,7 +133,7 @@ function formSubmit(e){
     var textBox = document.getElementById('userInput')
     if(textBox.value != ''){
       var date = Date.now()
-      var jsonData = {'message': textBox.value, 'time': date} //Take out date
+      var jsonData = {'message': textBox.value}
       var jsonString = JSON.stringify(jsonData)
 
       var xhr = new XMLHttpRequest();
