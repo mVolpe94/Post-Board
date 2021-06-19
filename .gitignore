@@ -8,7 +8,6 @@ Include/
 Lib/
 old/
 Scripts/
-message_database.db
 *.db
 pyvenv.cfg
 pyvenv.cfg
